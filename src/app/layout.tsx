@@ -9,7 +9,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "MONEYgayang Pasko! [GAMEFINITY]",
+  title: "[UAT] MONEYgayang Pasko! [GAMEFINITY]",
   description: "GAMEFINITY raffle held by InPlay",
 };
 
