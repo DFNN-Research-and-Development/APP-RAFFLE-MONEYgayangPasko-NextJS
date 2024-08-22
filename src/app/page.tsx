@@ -175,7 +175,7 @@ const Home: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (username === "" || password === ""){
+    if (username === "" || password === "" || drawDate === "" || drawWeek ===  ""){
       Swal.fire({
         title: 'Oops...',
         text: 'Please fill the required fields',
