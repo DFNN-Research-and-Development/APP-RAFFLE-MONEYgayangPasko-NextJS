@@ -72,7 +72,7 @@ const Reports : React.FC = () => {
             Swal.fire({
                 icon: 'warning',
                 title: 'Oops...',
-                text: 'Please Fill out the missing fields.',
+                text: 'Please fill out the missing fields.',
                 heightAuto: false
             }).then(() => {
                 setDisableGen(false)
@@ -120,7 +120,7 @@ const Reports : React.FC = () => {
                     console.log(err)
                     Swal.fire({
                         title: "Oops..",
-                        text: "Failed to get row Data",
+                        text: "Failed to get raw data",
                         icon: 'error',
                         heightAuto: false
                     })
@@ -129,7 +129,7 @@ const Reports : React.FC = () => {
                 console.log(err)
                 Swal.fire({
                     title: "Oops..",
-                    text: "Failed to get row Data",
+                    text: "Failed to get raw data",
                     icon: 'error',
                     heightAuto: false
                 })
