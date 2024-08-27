@@ -254,6 +254,9 @@ const Topbar: React.FC<TopbarProps> = ({ disable, arr, arr2, countWinner, path, 
                 rows={arr}
                 initialState={{
                     pagination: { paginationModel: { pageSize: 10 } },
+                    sorting: {
+                        sortModel: [{ field: "No", sort: 'asc'}]
+                    }
                 }}
             />
           </DialogContent>

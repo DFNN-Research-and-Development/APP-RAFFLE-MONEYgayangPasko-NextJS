@@ -92,8 +92,8 @@ const Raffle : React.FC = () => {
   
     const maskCardConfig = {
         maskWith: "*",
-        unmaskedStartDigits: 4,
-        unmaskedEndDigits: 2
+        unmaskedStartDigits: 3,
+        unmaskedEndDigits: 3
     }
 
     const fetchEntries = async () => {
@@ -156,29 +156,33 @@ const Raffle : React.FC = () => {
             }).then((res) => {
                 try {
                     const response = JSON.parse(JSON.parse(Decrypt(res.data.res)))
-                    const arr = response.results.map((res: any, index: number) => {
+                    const arr = response.results
+                    .sort((a: any,b: any) => a.index - b.index)
+                    .map((res: any, index: number, array: any) => {
                         return ({
                             id: index, 
-                            No: index+1,
+                            No: array.length -index,
                             FullName: res.FullName, 
                             EntryNo: res.EntryNo, 
                             CardNo: res.CardNo,
                             OutletName: res.OutletName,
                             ExtRefId: res.ExtRefId,
                             DrawPrize: res.DrawPrize, 
-                            DrawDate: moment(res.DrawDate).format('YYYY-MM-DD hh:mm:ss')
+                            DrawDate: moment.utc(res.DrawDate).format('YYYY-MM-DD hh:mm:ss')
                         })
                     })
-                    const arr2 = response.results.map((res: any, index: number) => {
+                    const arr2 = response.results
+                    .sort((a: any,b: any) => a.index - b.index)
+                    .map((res: any, index: number, array: any) => {
                         return ({
-                            No: index+1,
+                            No: array.length -index,
                             FullName: res.FullName, 
                             EntryNo: res.EntryNo, 
                             CardNo: res.CardNo,
                             OutletName: res.OutletName,
                             ExtRefId: res.ExtRefId,
                             DrawPrize: res.DrawPrize, 
-                            DrawDate: moment(res.DrawDate).format('YYYY-MM-DD hh:mm:ss')
+                            DrawDate: moment.utc(res.DrawDate).format('YYYY-MM-DD hh:mm:ss')
                         })
                     })
                     setLoading(false)
@@ -259,7 +263,7 @@ const Raffle : React.FC = () => {
                             let indexPrize = countWinner === null ? 0 : countWinner
                             setEntryNumber(response.results[0].EntryNo)
                             setFullname(response.results[0].FullName)
-                            setCardNumber(MaskData.maskCard(response.results[0].CardNo, maskCardConfig))
+                            setCardNumber(MaskData.maskStringV2(response.results[0].CardNo, maskNameConfig))
                             setOutlet(response.results[0].OutletName)
                             setPrize(prizes[indexPrize])
                             const entrybody = Encrypt(JSON.stringify({

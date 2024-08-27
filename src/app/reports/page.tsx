@@ -78,6 +78,18 @@ const Reports : React.FC = () => {
                 setDisableGen(false)
             })
         } else {
+            const dateTimeFrom = moment.utc(`${dateFrom} ${timeFromFinal}`)
+            const dateTimeTo = moment.utc(`${dateTo} ${timeToFinal}`)
+            if (dateTimeFrom.isAfter(dateTimeTo)){
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Invalid date. Please make sure that \"Date From\" is before \"Date To\"',
+                    heightAuto: false
+                }).then(() => {
+                    setDisableGen(false)
+                })
+            }
             const body = Encrypt(JSON.stringify({
                 cardNo: 0,
                 dateFrom: `${dateFrom} ${timeFromFinal}`,
