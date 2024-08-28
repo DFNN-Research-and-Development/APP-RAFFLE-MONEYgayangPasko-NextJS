@@ -35,6 +35,37 @@ const Topbar: React.FC<TopbarProps> = ({ disable, arr, arr2, countWinner, path, 
     const [loader, setLoader] = useState(false)
     const [loading, setLoading] = useState(false)
 
+    function safeParseSessionStorageItem(key: string) {
+        const encryptedData = sessionStorage.getItem(key);
+    
+        if (encryptedData) {
+            try {
+                const decryptedData = Decrypt(encryptedData);
+                const parsedData = JSON.parse(decryptedData);
+                return JSON.parse(parsedData);
+            } catch (error) {
+                console.error('Error parsing sessionStorage item:', error);
+                return null;
+            }
+        }
+    
+        return null;
+    }
+
+    const verifySession = () => {
+        if (typeof window !== 'undefined'){
+            const sessionData: any = safeParseSessionStorageItem("data")
+            // setDrawDate(sessionData?.date)
+
+            const intervalId = setInterval(() => {
+                setCurrentDate(`${moment(sessionData?.date).format("MMM, DD YYYY")} ${moment().format("HH:mm:ss a")}`)
+            }, 1000)
+
+            return () => {
+                clearInterval(intervalId)
+            }
+        }
+    }
  
 
     useEffect(() => {
@@ -44,18 +75,14 @@ const Topbar: React.FC<TopbarProps> = ({ disable, arr, arr2, countWinner, path, 
             setGenerateEntryDialog(true);
           }
         };
+
+        verifySession()
     
         // Add event listener when component mounts
         document.addEventListener("keydown", handleKeyDown);
-    
-        const intervalId = setInterval(() => {
-            setCurrentDate(moment().format("MMM DD, YYYY HH:mm:ss a"))
-        }, 1000)
-
         // Remove event listener when component unmounts
         return () => {
           document.removeEventListener("keydown", handleKeyDown);
-          clearInterval(intervalId)
         };
       }, []);
 

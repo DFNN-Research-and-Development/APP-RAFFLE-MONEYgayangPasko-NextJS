@@ -28,6 +28,29 @@ const Reports : React.FC = () => {
     const [outlet, setOutlet] = useState<any>({name: "All", id: 0})
     const csvLink = React.createRef();
 
+    function safeParseSessionStorageItem(key: string) {
+        const encryptedData = sessionStorage.getItem(key);
+    
+        if (encryptedData) {
+            try {
+                const decryptedData = Decrypt(encryptedData);
+                const parsedData = JSON.parse(decryptedData);
+                return JSON.parse(parsedData);
+            } catch (error) {
+                console.error('Error parsing sessionStorage item:', error);
+                return null;
+            }
+        }
+    
+        return null;
+    }
+
+    const verifySession = () => {
+        if (typeof window !== 'undefined'){
+            const sessionData: any = safeParseSessionStorageItem("data")
+        }
+    }
+
     const outletSelection = [
         {id: 0, name: "All"},
         {id: "IEST LuckyU Pilar Bataan", name: "IEST LuckyU Pilar Bataan"},
