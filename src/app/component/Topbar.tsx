@@ -34,6 +34,8 @@ const Topbar: React.FC<TopbarProps> = ({ disable, arr, arr2, countWinner, path, 
     const [fresh, setFresh] = useState(true);
     const [loader, setLoader] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [weekNumber, setWeekNumber] = useState('')
+    const [day, setDay] = useState('')
 
     function safeParseSessionStorageItem(key: string) {
         const encryptedData = sessionStorage.getItem(key);
@@ -55,7 +57,19 @@ const Topbar: React.FC<TopbarProps> = ({ disable, arr, arr2, countWinner, path, 
     const verifySession = () => {
         if (typeof window !== 'undefined'){
             const sessionData: any = safeParseSessionStorageItem("data")
-            // setDrawDate(sessionData?.date)
+            if (sessionData?.category === "GRAND"){
+                setWeekNumber("Grand Draw")
+                setDay("")
+            } else {
+                const week = sessionData?.category
+                const parts = week.split("-")
+                if (parts[2] === "FRI"){
+                    setDay("Friday")
+                } else {
+                    setDay("Tuesday")
+                }
+                setWeekNumber(`${parts[0]} ${parts[1]}`)
+            }
 
             const intervalId = setInterval(() => {
                 setCurrentDate(`${moment(sessionData?.date).format("MMM, DD YYYY")} ${moment().format("HH:mm:ss a")}`)
@@ -206,7 +220,7 @@ const Topbar: React.FC<TopbarProps> = ({ disable, arr, arr2, countWinner, path, 
                     </Box>
 
                     <Box sx={{ flexGrow: 0, display: 'flex' }}>
-                        <Typography sx={{ p: 3, pl: 1}}>{currentDate}</Typography>
+                        <Typography sx={{ p: 3, pl: 1}}>{weekNumber} {day} {currentDate}</Typography>
                         {
                             path === '/raffle' ? 
                             <IconButton disabled={disable} sx={{ p: 0 }} onClick={() => setWinnerDialog(true)}>
